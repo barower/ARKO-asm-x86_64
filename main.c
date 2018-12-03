@@ -4,6 +4,8 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
+int quit = 0;
+SDL_Event e;
 SDL_Window *window = NULL;
 SDL_Surface *screenSurface = NULL;
 SDL_Surface *helloWorld = NULL;
@@ -18,9 +20,23 @@ int main(int argc, char* args[])
 {
 	init();
 	loadMedia();
-	SDL_BlitSurface(helloWorld, NULL, screenSurface, NULL);
-	SDL_UpdateWindowSurface(window);
-	SDL_Delay(2000);
+
+	while(!quit){
+
+		while(SDL_PollEvent(&e) != 0){
+
+			if(e.type == SDL_QUIT){
+				quit = 1;
+				continue;
+			}
+
+			SDL_BlitSurface(helloWorld, NULL, screenSurface, NULL);
+			SDL_UpdateWindowSurface(window);
+
+		}
+
+	}
+
 	sdlClose();
 	return 0;
 }
