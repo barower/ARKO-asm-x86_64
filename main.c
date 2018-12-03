@@ -4,11 +4,14 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-int quit = 0;
-SDL_Event e;
-SDL_Window *window = NULL;
-SDL_Surface *screenSurface = NULL;
-SDL_Surface *helloWorld = NULL;
+enum KeyPressSurfaces{
+	KEY_PRESS_SURFACE_DEFAULT,
+	KEY_PRESS_SURFACE_UP,
+	KEY_PRESS_SURFACE_DOWN,
+	KEY_PRESS_SURFACE_LEFT,
+	KEY_PRESS_SURFACE_RIGHT,
+	KEY_PRESS_SURFACE_TOTAL,
+};
 
 void init();
 
@@ -16,10 +19,22 @@ void loadMedia();
 
 void sdlClose();
 
+SDL_Surface *loadSurface(char *path);
+
+SDL_Window *window = NULL;
+SDL_Surface *screenSurface = NULL;
+SDL_Surface *keyPressSurfaces[KEY_PRESS_SURFACE_TOTAL];
+SDL_Surface *currentSurface = NULL;
+
 int main(int argc, char* args[])
 {
+	int quit = 0;
+	SDL_Event e;
+
 	init();
 	loadMedia();
+
+	currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
 
 	while(!quit){
 
@@ -29,8 +44,31 @@ int main(int argc, char* args[])
 				quit = 1;
 				continue;
 			}
+			else if(e.type == SDL_KEYDOWN){
+				switch(e.key.keysym.sym){
+				case SDLK_UP:
+					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_UP];
+					break;
 
-			SDL_BlitSurface(helloWorld, NULL, screenSurface, NULL);
+				case SDLK_DOWN:
+					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_DOWN];
+					break;
+
+				case SDLK_LEFT:
+					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_LEFT];
+					break;
+
+				case SDLK_RIGHT:
+					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
+					break;
+
+				default:
+					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
+					break;
+				}
+			}
+
+			SDL_BlitSurface(currentSurface, NULL, screenSurface, NULL);
 			SDL_UpdateWindowSurface(window);
 
 		}
@@ -62,20 +100,50 @@ void init(){
 }
 
 void loadMedia(){
-	helloWorld = SDL_LoadBMP("output.bmp");
+	keyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT] = loadSurface("bmpki/output.bmp");
+	if(keyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT] == NULL){
+		printf("Failed to load image: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
 
-	if(helloWorld == NULL){
-		printf("Unable to get file: %s\n", SDL_GetError());
+	keyPressSurfaces[KEY_PRESS_SURFACE_UP] = loadSurface("bmpki/untitled.bmp");
+	if(keyPressSurfaces[KEY_PRESS_SURFACE_UP] == NULL){
+		printf("Failed to load image: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+
+	keyPressSurfaces[KEY_PRESS_SURFACE_DOWN] = loadSurface("bmpki/untitled2.bmp");
+	if(keyPressSurfaces[KEY_PRESS_SURFACE_DOWN] == NULL){
+		printf("Failed to load image: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+
+	keyPressSurfaces[KEY_PRESS_SURFACE_LEFT] = loadSurface("bmpki/untitled3.bmp");
+	if(keyPressSurfaces[KEY_PRESS_SURFACE_LEFT] == NULL){
+		printf("Failed to load image: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+
+	keyPressSurfaces[KEY_PRESS_SURFACE_RIGHT] = loadSurface("bmpki/untitled4.bmp");
+	if(keyPressSurfaces[KEY_PRESS_SURFACE_RIGHT] == NULL){
+		printf("Failed to load image: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 }
 
 void sdlClose(){
-	SDL_FreeSurface(helloWorld);
-	helloWorld = NULL;
 
 	SDL_DestroyWindow(window);
 	window = NULL;
 
 	SDL_Quit();
+}
+
+SDL_Surface *loadSurface(char *path){
+	SDL_Surface *loadedSurface = SDL_LoadBMP(path);
+	if(loadedSurface == NULL){
+		printf("Unable to load image: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+	return loadedSurface;
 }
