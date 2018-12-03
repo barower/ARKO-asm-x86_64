@@ -4,10 +4,28 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-int main( int argc, char* args[] )
+SDL_Window *window = NULL;
+SDL_Surface *screenSurface = NULL;
+SDL_Surface *helloWorld = NULL;
+
+void init();
+
+void loadMedia();
+
+void sdlClose();
+
+int main(int argc, char* args[])
 {
-	SDL_Window *window = NULL;
-	SDL_Surface *screenSurface = NULL;
+	init();
+	loadMedia();
+	SDL_BlitSurface(helloWorld, NULL, screenSurface, NULL);
+	SDL_UpdateWindowSurface(window);
+	SDL_Delay(2000);
+	sdlClose();
+	return 0;
+}
+
+void init(){
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0){
 		printf("SDL Init fail: %s\n", SDL_GetError());
@@ -20,22 +38,28 @@ int main( int argc, char* args[] )
 
 	if(window == NULL){
 		printf("Failed to init window: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
 	}
 
 	//Get window surface
 	screenSurface = SDL_GetWindowSurface(window);
+}
 
-	//Fill the surface white
-	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+void loadMedia(){
+	helloWorld = SDL_LoadBMP("output.bmp");
 
-	//Update the surface
-	SDL_UpdateWindowSurface(window);
+	if(helloWorld == NULL){
+		printf("Unable to get file: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+}
 
-	SDL_Delay(2000);
+void sdlClose(){
+	SDL_FreeSurface(helloWorld);
+	helloWorld = NULL;
 
 	SDL_DestroyWindow(window);
+	window = NULL;
 
 	SDL_Quit();
-
-	return 0;
 }
