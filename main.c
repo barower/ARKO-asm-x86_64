@@ -55,26 +55,25 @@ int main(int argc, char* args[])
 				case SDLK_k:
 					printf("Key up\n");
 					coefficients[cursorPosition] += 1;
-					//Increment value under cursor
 					break;
 
 				case SDLK_DOWN:
 				case SDLK_j:
 					printf("Key down\n");
 					coefficients[cursorPosition] -= 1;
-					//Decrement value under cursor
 					break;
 
 				case SDLK_LEFT:
 				case SDLK_h:
 					printf("Key left\n");
-					//Shift cursor left
+					cursorPosition -=  1;
+					cursorPosition = (cursorPosition < 0) ? CURSOR_POSITION_NO_ELEMENTS - 1 : cursorPosition;
 					break;
 
 				case SDLK_RIGHT:
 				case SDLK_l:
 					printf("Key right\n");
-					//Shift cursor right
+					cursorPosition = (cursorPosition + 1)%CURSOR_POSITION_NO_ELEMENTS;
 					break;
 
 				case SDLK_q:
@@ -89,9 +88,6 @@ int main(int argc, char* args[])
 				}
 			}
 
-			//Parse cursor change
-
-			//Run drawing function
 			drawText();
 
 			SDL_UpdateWindowSurface(window);
