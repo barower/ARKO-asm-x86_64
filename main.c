@@ -16,6 +16,8 @@ enum KeyPressSurfaces{
 void sdlInit();
 void sdlClose();
 
+void drawText();
+
 SDL_Window *window = NULL;
 SDL_Surface *screenSurface = NULL;
 SDL_Surface *keyPressSurfaces[KEY_PRESS_SURFACE_TOTAL];
@@ -67,6 +69,7 @@ int main(int argc, char* args[])
 			//Parse cursor change
 
 			//Run drawing function
+			drawText();
 
 			SDL_UpdateWindowSurface(window);
 
@@ -76,6 +79,11 @@ int main(int argc, char* args[])
 
 	sdlClose();
 	return 0;
+}
+
+void drawText(){
+	//this opens a font style and sets a size
+	TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
 }
 
 void sdlInit(){
