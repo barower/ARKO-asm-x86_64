@@ -5,7 +5,7 @@ OBJS = main.c
 CC = gcc
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
-COMPILER_FLAGS = -Wall -g
+COMPILER_FLAGS = -Wall -Werror -g
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = `sdl2-config --cflags --libs`
