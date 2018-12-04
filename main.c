@@ -13,28 +13,19 @@ enum KeyPressSurfaces{
 	KEY_PRESS_SURFACE_TOTAL,
 };
 
-void init();
-
-void loadMedia();
-
+void sdlInit();
 void sdlClose();
-
-SDL_Surface *loadSurface(char *path);
 
 SDL_Window *window = NULL;
 SDL_Surface *screenSurface = NULL;
 SDL_Surface *keyPressSurfaces[KEY_PRESS_SURFACE_TOTAL];
-SDL_Surface *currentSurface = NULL;
 
 int main(int argc, char* args[])
 {
 	int quit = 0;
 	SDL_Event e;
 
-	init();
-	loadMedia();
-
-	currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
+	sdlInit();
 
 	while(!quit){
 
@@ -47,28 +38,36 @@ int main(int argc, char* args[])
 			else if(e.type == SDL_KEYDOWN){
 				switch(e.key.keysym.sym){
 				case SDLK_UP:
-					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_UP];
+					printf("Key up\n");
+					//Increment value under cursor
 					break;
 
 				case SDLK_DOWN:
-					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_DOWN];
+					printf("Key down\n");
+					//Decrement value under cursor
 					break;
 
 				case SDLK_LEFT:
-					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_LEFT];
+					printf("Key left\n");
+					//Shift cursor left
 					break;
 
 				case SDLK_RIGHT:
-					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_RIGHT];
+					printf("Key right\n");
+					//Shift cursor right
 					break;
 
 				default:
-					currentSurface = keyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT];
+					printf("Other key\n");
+					//Do nothing with cursor
 					break;
 				}
 			}
 
-			SDL_BlitSurface(currentSurface, NULL, screenSurface, NULL);
+			//Parse cursor change
+
+			//Run drawing function
+
 			SDL_UpdateWindowSurface(window);
 
 		}
@@ -79,7 +78,7 @@ int main(int argc, char* args[])
 	return 0;
 }
 
-void init(){
+void sdlInit(){
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0){
 		printf("SDL Init fail: %s\n", SDL_GetError());
@@ -99,51 +98,10 @@ void init(){
 	screenSurface = SDL_GetWindowSurface(window);
 }
 
-void loadMedia(){
-	keyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT] = loadSurface("bmpki/output.bmp");
-	if(keyPressSurfaces[KEY_PRESS_SURFACE_DEFAULT] == NULL){
-		printf("Failed to load image: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
-
-	keyPressSurfaces[KEY_PRESS_SURFACE_UP] = loadSurface("bmpki/untitled.bmp");
-	if(keyPressSurfaces[KEY_PRESS_SURFACE_UP] == NULL){
-		printf("Failed to load image: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
-
-	keyPressSurfaces[KEY_PRESS_SURFACE_DOWN] = loadSurface("bmpki/untitled2.bmp");
-	if(keyPressSurfaces[KEY_PRESS_SURFACE_DOWN] == NULL){
-		printf("Failed to load image: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
-
-	keyPressSurfaces[KEY_PRESS_SURFACE_LEFT] = loadSurface("bmpki/untitled3.bmp");
-	if(keyPressSurfaces[KEY_PRESS_SURFACE_LEFT] == NULL){
-		printf("Failed to load image: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
-
-	keyPressSurfaces[KEY_PRESS_SURFACE_RIGHT] = loadSurface("bmpki/untitled4.bmp");
-	if(keyPressSurfaces[KEY_PRESS_SURFACE_RIGHT] == NULL){
-		printf("Failed to load image: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
-}
-
 void sdlClose(){
 
 	SDL_DestroyWindow(window);
 	window = NULL;
 
 	SDL_Quit();
-}
-
-SDL_Surface *loadSurface(char *path){
-	SDL_Surface *loadedSurface = SDL_LoadBMP(path);
-	if(loadedSurface == NULL){
-		printf("Unable to load image: %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
-	return loadedSurface;
 }
