@@ -5,10 +5,10 @@ OBJS = main.c
 CC = gcc
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
-COMPILER_FLAGS = -Wall -Werror -g
+COMPILER_FLAGS = -Wall -g
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = `sdl2-config --cflags --libs`
+LINKER_FLAGS =  -L/usr/lib/x86_64-linux-gnu -Wl,-rpath,/usr/local/lib -Wl,--enable-new-dtags -lSDL2 -lSDL2_ttf -D_REENTRANT -I/usr/include/SDL2
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = arko_x86_64
