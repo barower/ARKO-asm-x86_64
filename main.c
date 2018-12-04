@@ -14,6 +14,16 @@ enum KeyPressSurfaces{
 	KEY_PRESS_SURFACE_TOTAL,
 };
 
+enum {
+	CURSOR_POSITION_A = 0,
+	CURSOR_POSITION_B,
+	CURSOR_POSITION_C,
+	CURSOR_POSITION_D,
+	CURSOR_POSITION_NO_ELEMENTS
+};
+int coefficients[] = { 0, 0, 0, 0 };
+int cursorPosition = CURSOR_POSITION_A;
+
 void sdlInit();
 void sdlClose();
 
@@ -44,12 +54,14 @@ int main(int argc, char* args[])
 				case SDLK_UP:
 				case SDLK_k:
 					printf("Key up\n");
+					coefficients[cursorPosition] += 1;
 					//Increment value under cursor
 					break;
 
 				case SDLK_DOWN:
 				case SDLK_j:
 					printf("Key down\n");
+					coefficients[cursorPosition] -= 1;
 					//Decrement value under cursor
 					break;
 
@@ -116,13 +128,19 @@ void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offs
 
 void drawText(){
 
+	char string[20];
+
 	// this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 	SDL_Color White = {255, 255, 255};
 
-	putString("A=10", White, 0.075, 0.95, 0);
-	putString("B=20", White, 0.15, 0.95, 0);
-	putString("C=99", White, 0.225, 0.95, 0);
-	putString("D=5", White, 0.3, 0.95, 0);
+	snprintf(string, 19, "A=%d", coefficients[CURSOR_POSITION_A]);
+	putString(string, White, 0.075, 0.95, 0);
+	snprintf(string, 19, "B=%d", coefficients[CURSOR_POSITION_B]);
+	putString(string, White, 0.15, 0.95, 0);
+	snprintf(string, 19, "C=%d", coefficients[CURSOR_POSITION_C]);
+	putString(string, White, 0.225, 0.95, 0);
+	snprintf(string, 19, "D=%d", coefficients[CURSOR_POSITION_D]);
+	putString(string, White, 0.3, 0.95, 0);
 
 }
 
