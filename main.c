@@ -84,13 +84,29 @@ int main(int argc, char* args[])
 
 void drawText(){
 	//this opens a font style and sets a size
-	TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
+	TTF_Font* Sans = TTF_OpenFont("/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-B.ttf", 24);
+	if(Sans == NULL){
+		printf("Couldn't get font: %s\n", SDL_GetError());
+	}
+
+	// this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+	SDL_Color White = {255, 255, 255};
+
+	// as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "put your text here", White); 
+
+	SDL_BlitSurface(surfaceMessage, NULL, screenSurface, NULL);
 }
 
 void sdlInit(){
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0){
 		printf("SDL Init fail: %s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+
+	if(TTF_Init() < 0){
+		printf("TTF Init fail: %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 
