@@ -22,6 +22,7 @@ void drawText();
 SDL_Window *window = NULL;
 SDL_Surface *screenSurface = NULL;
 SDL_Surface *keyPressSurfaces[KEY_PRESS_SURFACE_TOTAL];
+TTF_Font* Sans = NULL;
 
 int main(int argc, char* args[])
 {
@@ -88,19 +89,28 @@ int main(int argc, char* args[])
 }
 
 void drawText(){
-	//this opens a font style and sets a size
-	TTF_Font* Sans = TTF_OpenFont("/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-B.ttf", 10);
-	if(Sans == NULL){
-		printf("Couldn't get font: %s\n", SDL_GetError());
-	}
 
 	// this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 	SDL_Color White = {255, 255, 255};
 
 	// as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "put your text here", White); 
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "A=10", White); 
 
-	SDL_BlitSurface(surfaceMessage, NULL, screenSurface, NULL);
+	SDL_Rect srcrect = {
+		.x = 0,
+		.y = 0,
+		.w = 32,
+		.h = 32
+	};
+
+	SDL_Rect dstrect = {
+		.x = (screenSurface->w)*1/5,
+		.y = (screenSurface->h)*9/10,
+		.w = 32,
+		.h = 32
+	};
+
+	SDL_BlitSurface(surfaceMessage, &srcrect, screenSurface, &dstrect);
 }
 
 void sdlInit(){
@@ -126,6 +136,12 @@ void sdlInit(){
 
 	//Get window surface
 	screenSurface = SDL_GetWindowSurface(window);
+
+	//this opens a font style and sets a size
+	Sans = TTF_OpenFont("/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-B.ttf", 12);
+	if(Sans == NULL){
+		printf("Couldn't get font: %s\n", SDL_GetError());
+	}
 }
 
 void sdlClose(){
