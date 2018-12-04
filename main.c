@@ -42,21 +42,25 @@ int main(int argc, char* args[])
 			else if(e.type == SDL_KEYDOWN){
 				switch(e.key.keysym.sym){
 				case SDLK_UP:
+				case SDLK_k:
 					printf("Key up\n");
 					//Increment value under cursor
 					break;
 
 				case SDLK_DOWN:
+				case SDLK_j:
 					printf("Key down\n");
 					//Decrement value under cursor
 					break;
 
 				case SDLK_LEFT:
+				case SDLK_h:
 					printf("Key left\n");
 					//Shift cursor left
 					break;
 
 				case SDLK_RIGHT:
+				case SDLK_l:
 					printf("Key right\n");
 					//Shift cursor right
 					break;
