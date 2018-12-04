@@ -60,6 +60,11 @@ int main(int argc, char* args[])
 					//Shift cursor right
 					break;
 
+				case SDLK_q:
+					printf("Exiting\n");
+					exit(EXIT_SUCCESS);
+					break;
+
 				default:
 					printf("Other key\n");
 					//Do nothing with cursor
@@ -84,7 +89,7 @@ int main(int argc, char* args[])
 
 void drawText(){
 	//this opens a font style and sets a size
-	TTF_Font* Sans = TTF_OpenFont("/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-B.ttf", 24);
+	TTF_Font* Sans = TTF_OpenFont("/usr/share/fonts/truetype/ubuntu-font-family/UbuntuMono-B.ttf", 10);
 	if(Sans == NULL){
 		printf("Couldn't get font: %s\n", SDL_GetError());
 	}
