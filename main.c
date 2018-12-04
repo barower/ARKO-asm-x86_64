@@ -123,6 +123,7 @@ void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offs
 		.h = 32
 	};
 
+	SDL_FillRect(screenSurface, &dstrect, 0);
 	SDL_BlitSurface(surfaceMessage, &srcrect, screenSurface, &dstrect);
 }
 
