@@ -88,13 +88,10 @@ int main(int argc, char* args[])
 	return 0;
 }
 
-void drawText(){
-
-	// this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
-	SDL_Color White = {255, 255, 255};
+void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offset){
 
 	// as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "A=10", White); 
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, color); 
 
 	SDL_Rect srcrect = {
 		.x = 0,
@@ -104,13 +101,25 @@ void drawText(){
 	};
 
 	SDL_Rect dstrect = {
-		.x = (screenSurface->w)*1/5,
-		.y = (screenSurface->h)*9/10,
+		.x = (int)(screenSurface->w*x_pos),
+		.y = (int)(screenSurface->h*y_pos) + y_offset,
 		.w = 32,
 		.h = 32
 	};
 
 	SDL_BlitSurface(surfaceMessage, &srcrect, screenSurface, &dstrect);
+}
+
+void drawText(){
+
+	// this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+	SDL_Color White = {255, 255, 255};
+
+	putString("A=10", White, 0.075, 0.95, 0);
+	putString("B=20", White, 0.15, 0.95, 0);
+	putString("C=99", White, 0.225, 0.95, 0);
+	putString("D=5", White, 0.3, 0.95, 0);
+
 }
 
 void sdlInit(){
