@@ -98,7 +98,7 @@ int main(int argc, char* args[])
 
 			if(draw){
 				drawText();
-				drawGraph();
+				drawGraph(screenSurface, coefficients, CURSOR_POSITION_NO_ELEMENTS);
 				SDL_UpdateWindowSurface(window);
 			}
 
@@ -182,7 +182,7 @@ void sdlInit(){
 	}
 
 	drawText();
-	drawGraph();
+	drawGraph(screenSurface, coefficients, CURSOR_POSITION_NO_ELEMENTS);
 	SDL_UpdateWindowSurface(window);
 }
 
