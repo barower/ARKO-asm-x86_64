@@ -97,6 +97,7 @@ int main(int argc, char* args[])
 			}
 
 			if(draw){
+				SDL_FillRect(screenSurface, NULL, 0);
 				drawText();
 				drawGraph(screenSurface, coefficients, CURSOR_POSITION_NO_ELEMENTS);
 				SDL_UpdateWindowSurface(window);
