@@ -2,6 +2,8 @@
 #include <SDL_ttf.h>
 #include <stdio.h>
 
+#include "drawgraph.h"
+
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
@@ -36,7 +38,7 @@ TTF_Font* Sans = NULL;
 
 int main(int argc, char* args[])
 {
-	int quit = 0;
+	int quit = 0, draw = 0;
 	SDL_Event e;
 
 	sdlInit();
@@ -44,6 +46,8 @@ int main(int argc, char* args[])
 	while(!quit){
 
 		while(SDL_PollEvent(&e) != 0){
+		
+			draw = 0;
 
 			if(e.type == SDL_QUIT){
 				quit = 1;
@@ -54,18 +58,21 @@ int main(int argc, char* args[])
 				case SDLK_UP:
 				case SDLK_k:
 					printf("Key up\n");
+					draw = 1;
 					coefficients[cursorPosition] += 1;
 					break;
 
 				case SDLK_DOWN:
 				case SDLK_j:
 					printf("Key down\n");
+					draw = 1;
 					coefficients[cursorPosition] -= 1;
 					break;
 
 				case SDLK_LEFT:
 				case SDLK_h:
 					printf("Key left\n");
+					draw = 1;
 					cursorPosition -=  1;
 					cursorPosition = (cursorPosition < 0) ? CURSOR_POSITION_NO_ELEMENTS - 1 : cursorPosition;
 					break;
@@ -73,6 +80,7 @@ int main(int argc, char* args[])
 				case SDLK_RIGHT:
 				case SDLK_l:
 					printf("Key right\n");
+					draw = 1;
 					cursorPosition = (cursorPosition + 1)%CURSOR_POSITION_NO_ELEMENTS;
 					break;
 
@@ -88,9 +96,11 @@ int main(int argc, char* args[])
 				}
 			}
 
-			drawText();
-
-			SDL_UpdateWindowSurface(window);
+			if(draw){
+				drawText();
+				drawGraph();
+				SDL_UpdateWindowSurface(window);
+			}
 
 		}
 
@@ -170,6 +180,10 @@ void sdlInit(){
 	if(Sans == NULL){
 		printf("Couldn't get font: %s\n", SDL_GetError());
 	}
+
+	drawText();
+	drawGraph();
+	SDL_UpdateWindowSurface(window);
 }
 
 void sdlClose(){
