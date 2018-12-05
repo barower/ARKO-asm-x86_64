@@ -7,8 +7,8 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-#define S_STEP 0.01
-#define S_VALUE_MIN 0.015
+#define S_STEP 0.005
+#define S_VALUE_MIN 0.0075
 
 enum KeyPressSurfaces{
 	KEY_PRESS_SURFACE_DEFAULT,
@@ -165,7 +165,7 @@ void drawText(){
 	putString(string, White, 0.225, 0.95, 0);
 	snprintf(string, 19, "D=%d", (int)coefficients[CURSOR_POSITION_D]);
 	putString(string, White, 0.3, 0.95, 0);
-	snprintf(string, 19, "S=%.2f", coefficients[CURSOR_POSITION_S]);
+	snprintf(string, 19, "S=%.3f", coefficients[CURSOR_POSITION_S]);
 	putString(string, White, 0.375, 0.95, 0);
 
 }
