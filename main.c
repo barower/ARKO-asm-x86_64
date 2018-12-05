@@ -7,6 +7,9 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
+#define S_STEP 0.01
+#define S_VALUE_MIN 0.015
+
 enum KeyPressSurfaces{
 	KEY_PRESS_SURFACE_DEFAULT,
 	KEY_PRESS_SURFACE_UP,
@@ -21,9 +24,10 @@ enum {
 	CURSOR_POSITION_B,
 	CURSOR_POSITION_C,
 	CURSOR_POSITION_D,
+	CURSOR_POSITION_S,
 	CURSOR_POSITION_NO_ELEMENTS
 };
-int coefficients[] = { 0, 0, 0, 0 };
+float coefficients[] = { 0, 0, 0, 0, S_STEP };
 int cursorPosition = CURSOR_POSITION_A;
 
 void sdlInit();
@@ -59,14 +63,26 @@ int main(int argc, char* args[])
 				case SDLK_k:
 					printf("Key up\n");
 					draw = 1;
-					coefficients[cursorPosition] += 1;
+					if(cursorPosition == CURSOR_POSITION_S){
+						coefficients[cursorPosition] += S_STEP;
+					} else {
+						coefficients[cursorPosition] += 1;
+					}
 					break;
 
 				case SDLK_DOWN:
 				case SDLK_j:
 					printf("Key down\n");
 					draw = 1;
-					coefficients[cursorPosition] -= 1;
+					if(cursorPosition == CURSOR_POSITION_S){
+						if(coefficients[cursorPosition] > S_VALUE_MIN){
+							coefficients[cursorPosition] -= S_STEP;
+						} else {
+							draw = 0;
+						}
+					} else {
+						coefficients[cursorPosition] -= 1;
+					}
 					break;
 
 				case SDLK_LEFT:
@@ -99,7 +115,7 @@ int main(int argc, char* args[])
 			if(draw){
 				SDL_FillRect(screenSurface, NULL, 0);
 				drawText();
-				drawGraph(screenSurface, coefficients, CURSOR_POSITION_NO_ELEMENTS);
+				drawGraph(screenSurface, coefficients);
 				SDL_UpdateWindowSurface(window);
 			}
 
@@ -119,14 +135,14 @@ void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offs
 	SDL_Rect srcrect = {
 		.x = 0,
 		.y = 0,
-		.w = 32,
+		.w = 64,
 		.h = 32
 	};
 
 	SDL_Rect dstrect = {
 		.x = (int)(screenSurface->w*x_pos),
 		.y = (int)(screenSurface->h*y_pos) + y_offset,
-		.w = 32,
+		.w = 64,
 		.h = 32
 	};
 
@@ -141,14 +157,16 @@ void drawText(){
 	// this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 	SDL_Color White = {255, 255, 255};
 
-	snprintf(string, 19, "A=%d", coefficients[CURSOR_POSITION_A]);
+	snprintf(string, 19, "A=%d", (int)coefficients[CURSOR_POSITION_A]);
 	putString(string, White, 0.075, 0.95, 0);
-	snprintf(string, 19, "B=%d", coefficients[CURSOR_POSITION_B]);
+	snprintf(string, 19, "B=%d", (int)coefficients[CURSOR_POSITION_B]);
 	putString(string, White, 0.15, 0.95, 0);
-	snprintf(string, 19, "C=%d", coefficients[CURSOR_POSITION_C]);
+	snprintf(string, 19, "C=%d", (int)coefficients[CURSOR_POSITION_C]);
 	putString(string, White, 0.225, 0.95, 0);
-	snprintf(string, 19, "D=%d", coefficients[CURSOR_POSITION_D]);
+	snprintf(string, 19, "D=%d", (int)coefficients[CURSOR_POSITION_D]);
 	putString(string, White, 0.3, 0.95, 0);
+	snprintf(string, 19, "S=%.2f", coefficients[CURSOR_POSITION_S]);
+	putString(string, White, 0.375, 0.95, 0);
 
 }
 
@@ -183,7 +201,7 @@ void sdlInit(){
 	}
 
 	drawText();
-	drawGraph(screenSurface, coefficients, CURSOR_POSITION_NO_ELEMENTS);
+	drawGraph(screenSurface, coefficients);
 	SDL_UpdateWindowSurface(window);
 }
 

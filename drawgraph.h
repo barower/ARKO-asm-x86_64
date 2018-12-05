@@ -3,6 +3,6 @@
 
 #include <SDL.h>
 
-void drawGraph(SDL_Surface *surface, int *coefficients, int coeff_size);
+void drawGraph(SDL_Surface *surface, float *coefficients);
 
 #endif //__DRAWGRAPH_H
