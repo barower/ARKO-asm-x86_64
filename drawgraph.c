@@ -31,7 +31,7 @@ void drawGraph(SDL_Surface *surface, double *coefficients){
 		// 1. Put pixel on screen
 		double y = A*x*x*x + B*x*x + C*x + D;
 		unsigned int y_offset = (unsigned int)((y + 1.0)*h/2.0);
-		int bufpos = x_offset + y_offset*w;
+		int bufpos = x_offset + (h - y_offset)*w;
 		if(bufpos > 0 && bufpos < w*h){
 			*(bufi + bufpos) = 0x00FF0000;
 		}
