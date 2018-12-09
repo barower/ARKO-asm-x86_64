@@ -7,6 +7,7 @@
 ;  r8     r9    stack    MMX0
 drawGraph_body:
 
+	;	-----------
 	;	Draw y axis
 	;		Prepare counter
 	mov		rax, rdx
@@ -23,6 +24,7 @@ yaxisloop:
 	dec		rax
 	jg		yaxisloop
 
+	;	-----------
 	;	Draw x axis
 xaxisinit:
 	;		Prepare counter
@@ -34,5 +36,17 @@ xaxisinit:
 	mul		edx
 	lea		r10, [rdi + rax*2]
 	mov		[r10], DWORD 0xFFFFFFFF
+
+	;		Decrement counter
+	dec		r11
+	jz		graph
+xaxisloop:
+	add		r10, 4
+	mov		[r10], DWORD 0xFFFFFFFF
+	dec		r11
+	jg		xaxisloop
+
+graph:
+
 
 	ret
