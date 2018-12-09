@@ -23,6 +23,16 @@ yaxisloop:
 	dec		rax
 	jg		yaxisloop
 
+	;	Draw x axis
 xaxisinit:
+	;		Prepare counter
+	mov		r11, rsi
+
+	;		Prepare initial address:
+	;			(height/2)*width*4
+	mov		rax, rsi
+	mul		edx
+	lea		r10, [rdi + rax*2]
+	mov		[r10], DWORD 0xFFFFFFFF
 
 	ret
