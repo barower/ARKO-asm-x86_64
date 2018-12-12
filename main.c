@@ -131,13 +131,8 @@ int main(int argc, char* args[])
 void drawGraph(SDL_Surface *surface, double *coefficients){
 	printf("Printing graph\n");
 
-	int A = (int)coefficients[0];
-	int B = (int)coefficients[1];
-	int C = (int)coefficients[2];
-	int D = (int)coefficients[3];
-	double S = coefficients[4];
-
-	drawGraph_body((unsigned char *)surface->pixels, surface->w, surface->h, A, B, C, D, S);
+	drawGraph_body((unsigned char *)surface->pixels, surface->w, surface->h, 
+		coefficients[0], coefficients[1], coefficients[2], coefficients[3], coefficients[4]);
 }
 
 void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offset){
@@ -170,13 +165,13 @@ void drawText(){
 	// this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
 	SDL_Color White = {255, 255, 255};
 
-	snprintf(string, 19, "A=%d", (int)coefficients[CURSOR_POSITION_A]);
+	snprintf(string, 19, "A=%.1f", coefficients[CURSOR_POSITION_A]);
 	putString(string, White, 0.075, 0.95, 0);
-	snprintf(string, 19, "B=%d", (int)coefficients[CURSOR_POSITION_B]);
+	snprintf(string, 19, "B=%.1f", coefficients[CURSOR_POSITION_B]);
 	putString(string, White, 0.15, 0.95, 0);
-	snprintf(string, 19, "C=%d", (int)coefficients[CURSOR_POSITION_C]);
+	snprintf(string, 19, "C=%.1f", coefficients[CURSOR_POSITION_C]);
 	putString(string, White, 0.225, 0.95, 0);
-	snprintf(string, 19, "D=%d", (int)coefficients[CURSOR_POSITION_D]);
+	snprintf(string, 19, "D=%.1f", coefficients[CURSOR_POSITION_D]);
 	putString(string, White, 0.3, 0.95, 0);
 	snprintf(string, 19, "S=%.3f", coefficients[CURSOR_POSITION_S]);
 	putString(string, White, 0.375, 0.95, 0);
