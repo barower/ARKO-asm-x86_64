@@ -50,5 +50,19 @@ xaxisloop:
 
 ;------------------------------------------------------------------------------
 graph:
+	; (double)x = mmx5
+	; x = -1.0
+	mov		rcx, -1
+	cvtsi2sd	xmm5, rcx
+
+	; x index in buffer is zero
+	mov		rcx, 0
+
+	; y index in buffer is zero
+	mov		rdx, 0
+
+	;patrz na kod do osi x
+	;lea		rax, [rdi, rdx*rsi]
+
 
 	ret
