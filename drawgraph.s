@@ -1,7 +1,7 @@
 	global		drawGraph_body
 	section		.text
 
-;				rdi		      rsi	  rdx       mmx0
+;				rdi		      esi	  edx       mmx0
 ; void drawGraph_body(unsigned char *pPixelBuffer, int width, int height, double A,
 ; double B, double C, double D, double S);
 ;   mmx1      mmx2      mmx3      mmx4
@@ -50,6 +50,5 @@ xaxisloop:
 
 ;------------------------------------------------------------------------------
 graph:
-
 
 	ret
