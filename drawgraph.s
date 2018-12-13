@@ -1,10 +1,10 @@
 	global		drawGraph_body
 	section		.text
 
-;				rdi		      rsi	  rdx      rcx
-; void drawGraph_body(unsigned char *pPixelBuffer, int width, int height, int A,
-; int B, int C, int D, double S);
-;  r8     r9    stack    MMX0
+;				rdi		      rsi	  rdx       mmx0
+; void drawGraph_body(unsigned char *pPixelBuffer, int width, int height, double A,
+; double B, double C, double D, double S);
+;   mmx1      mmx2      mmx3      mmx4
 drawGraph_body:
 
 ;------------------------------------------------------------------------------
