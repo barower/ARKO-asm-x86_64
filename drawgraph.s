@@ -10,14 +10,14 @@ drawGraph_body:
 ;------------------------------------------------------------------------------
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
-; | rax	|				| rbx |	MUST BE PRESERVED		|
+; | rax	| COUNTER			| rbx |	(must be preserved)		|
 ; | rcx	|				| rdx | (input)buffer height		|
-; | rbp	| MUST BE PRESERVED		| rsp |					|
+; | rbp	| (must be preserved)		| rsp |					|
 ; | rsi	| (input)buffer width		| rdi | (input)buffer base address	|
 ; | r8	|				| r9  |					|
-; | r10	|				| r11 |					|
-; | r12	| MUST BE PRESERVED		| r13 | MUST BE PRESERVED		|
-; | r14	| MUST BE PRESERVED		| r15 | MUST BE PRESERVED		|
+; | r10	| WRITE ADDRESS			| r11 |					|
+; | r12	| (must be preserved)		| r13 | (must be preserved)		|
+; | r14	| (must be preserved)		| r15 | (must be preserved)		|
 	;	Draw y axis
 	;		Prepare counter
 	mov		rax, rdx
@@ -38,14 +38,14 @@ yaxisloop:
 ;------------------------------------------------------------------------------
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
-; | rax	|				| rbx |	MUST BE PRESERVED		|
+; | rax	| TEMPORARY REGISTER		| rbx |	(must be preserved)		|
 ; | rcx	|				| rdx | (input)buffer height		|
-; | rbp	| MUST BE PRESERVED		| rsp |					|
+; | rbp	| (must be preserved)		| rsp |					|
 ; | rsi	| (input)buffer width		| rdi | (input)buffer base address	|
 ; | r8	|				| r9  |					|
-; | r10	|				| r11 |					|
-; | r12	| MUST BE PRESERVED		| r13 | MUST BE PRESERVED		|
-; | r14	| MUST BE PRESERVED		| r15 | MUST BE PRESERVED		|
+; | r10	| WRITE ADDRESS			| r11 |	COUNTER				|
+; | r12	| (must be preserved)		| r13 | (must be preserved)		|
+; | r14	| (must be preserved)		| r15 | (must be preserved)		|
 	;	Draw x axis
 xaxisinit:
 	;		Prepare counter
@@ -71,25 +71,25 @@ xaxisloop:
 ;------------------------------------------------------------------------------
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
-; | rax	|				| rbx |	MUST BE PRESERVED		|
-; | rcx	|				| rdx | (input)buffer height		|
-; | rbp	| MUST BE PRESERVED		| rsp |					|
+; | rax	| TEMPORARY REGISTER		| rbx |	(must be preserved)		|
+; | rcx	| X OFFSET IN BUFFER 		| rdx | (input)buffer height		|
+; | rbp	| (must be preserved)		| rsp |					|
 ; | rsi	| (input)buffer width		| rdi | (input)buffer base address	|
-; | r8	|				| r9  |					|
-; | r10	|				| r11 |					|
-; | r12	| MUST BE PRESERVED		| r13 | MUST BE PRESERVED		|
-; | r14	| MUST BE PRESERVED		| r15 | MUST BE PRESERVED		|
+; | r8	| Y OFFSET IN BUFFER 		| r9  |					|
+; | r10	| WRITE ADDRESS			| r11 |					|
+; | r12	| (must be preserved)		| r13 | (must be preserved)		|
+; | r14	| (must be preserved)		| r15 | (must be preserved)		|
 ; | xmm0| (input)A			| xmm1| (input)B			|
 ; | xmm2| (input)C			| xmm3| (input)D			|
-; | xmm4| (input)S			| xmm5|				|
-; | xmm6|				| xmm7|					|
+; | xmm4| (input)S			| xmm5| X IN DOUBLE			|
+; | xmm6| Y IN DOUBLE			| xmm7|	TEMPORARY REGISTER		|
 graph:
 	; xmm5 = (double)x
 	; x = -1.0
 	mov		rcx, -1
 	cvtsi2sd	xmm5, rcx
 
-	; rcx = x index in buffer is zero
+	; start x offset in buffer from 0 (left)
 	mov		rcx, 0
 
 	; r8 = CALCULATE y offset here
