@@ -1,10 +1,10 @@
 	global		drawGraph_body
 	section		.text
 
-;				rdi		      esi	  edx       mmx0
+;				rdi		      rsi	  rdx       xmm0
 ; void drawGraph_body(unsigned char *pPixelBuffer, int width, int height, double A,
 ; double B, double C, double D, double S);
-;   mmx1      mmx2      mmx3      mmx4
+;   xmm1      xmm2      xmm3      xmm4
 drawGraph_body:
 
 ;------------------------------------------------------------------------------
@@ -50,19 +50,24 @@ xaxisloop:
 
 ;------------------------------------------------------------------------------
 graph:
-	; (double)x = mmx5
+	; xmm5 = (double)x
 	; x = -1.0
 	mov		rcx, -1
 	cvtsi2sd	xmm5, rcx
 
-	; x index in buffer is zero
+	; rcx = x index in buffer is zero
 	mov		rcx, 0
 
-	; y index in buffer is zero
-	mov		rdx, 0
+	; r8 = CALCULATE y offset here
+	; xmm6 = (double)y
+	movsd		xmm6, xmm5
+	mulsd		xmm6, xmm2
+	cvtsd2si	r8, xmm6
 
 	;patrz na kod do osi x
-	;lea		rax, [rdi, rdx*rsi]
-
+	mov		rax, r8
+	mul		rsi
+	lea		r10, [rdi, rax*4]
+	mov		[r10], DWORD 0x00FF0000
 
 	ret
