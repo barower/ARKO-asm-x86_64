@@ -92,13 +92,13 @@ graph:
 	; start x offset in buffer from 0 (left)
 	mov		rcx, 0
 
-	; r8 = CALCULATE y offset here
-	; xmm6 = (double)y
-	movsd		xmm6, xmm5
-	mulsd		xmm6, xmm2
+	; y = D
+	movsd		xmm6, xmm3
+
+	; convert y in double to y in index
 	cvtsd2si	r8, xmm6
 
-	;patrz na kod do osi x
+	; calculate address on buffer
 	mov		rax, r8
 	mul		rsi
 	lea		r10, [rdi, rax*4]
