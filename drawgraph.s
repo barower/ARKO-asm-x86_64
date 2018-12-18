@@ -10,14 +10,14 @@ drawGraph_body:
 ;------------------------------------------------------------------------------
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
-; | rax	|				| rbx |					|
-; | rcx	|				| rdx |					|
-; | rbp	|				| rsp |					|
-; | rsi	|				| rdi |					|
+; | rax	|				| rbx |	MUST BE PRESERVED		|
+; | rcx	|				| rdx | (input)buffer height		|
+; | rbp	| MUST BE PRESERVED		| rsp |					|
+; | rsi	| (input)buffer width		| rdi | (input)buffer base address	|
 ; | r8	|				| r9  |					|
 ; | r10	|				| r11 |					|
-; | r12	|				| r13 |					|
-; | r14	|				| r15 |					|
+; | r12	| MUST BE PRESERVED		| r13 | MUST BE PRESERVED		|
+; | r14	| MUST BE PRESERVED		| r15 | MUST BE PRESERVED		|
 	;	Draw y axis
 	;		Prepare counter
 	mov		rax, rdx
@@ -38,14 +38,14 @@ yaxisloop:
 ;------------------------------------------------------------------------------
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
-; | rax	|				| rbx |					|
-; | rcx	|				| rdx |					|
-; | rbp	|				| rsp |					|
-; | rsi	|				| rdi |					|
+; | rax	|				| rbx |	MUST BE PRESERVED		|
+; | rcx	|				| rdx | (input)buffer height		|
+; | rbp	| MUST BE PRESERVED		| rsp |					|
+; | rsi	| (input)buffer width		| rdi | (input)buffer base address	|
 ; | r8	|				| r9  |					|
 ; | r10	|				| r11 |					|
-; | r12	|				| r13 |					|
-; | r14	|				| r15 |					|
+; | r12	| MUST BE PRESERVED		| r13 | MUST BE PRESERVED		|
+; | r14	| MUST BE PRESERVED		| r15 | MUST BE PRESERVED		|
 	;	Draw x axis
 xaxisinit:
 	;		Prepare counter
@@ -71,17 +71,17 @@ xaxisloop:
 ;------------------------------------------------------------------------------
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
-; | rax	|				| rbx |					|
-; | rcx	|				| rdx |					|
-; | rbp	|				| rsp |					|
-; | rsi	|				| rdi |					|
+; | rax	|				| rbx |	MUST BE PRESERVED		|
+; | rcx	|				| rdx | (input)buffer height		|
+; | rbp	| MUST BE PRESERVED		| rsp |					|
+; | rsi	| (input)buffer width		| rdi | (input)buffer base address	|
 ; | r8	|				| r9  |					|
 ; | r10	|				| r11 |					|
-; | r12	|				| r13 |					|
-; | r14	|				| r15 |					|
-; | xmm0|				| xmm1|					|
-; | xmm2|				| xmm3|					|
-; | xmm4|				| xmm5|					|
+; | r12	| MUST BE PRESERVED		| r13 | MUST BE PRESERVED		|
+; | r14	| MUST BE PRESERVED		| r15 | MUST BE PRESERVED		|
+; | xmm0| (input)A			| xmm1| (input)B			|
+; | xmm2| (input)C			| xmm3| (input)D			|
+; | xmm4| (input)S			| xmm5|				|
 ; | xmm6|				| xmm7|					|
 graph:
 	; xmm5 = (double)x
