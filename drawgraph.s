@@ -96,6 +96,15 @@ graph:
 	movsd		xmm6, xmm3
 
 	; convert y in double to y in index
+	; y = y + 1.0
+
+	; y *= (height/2)
+	mov		rax, rdx
+	sar		rax, 1
+	cvtsi2sd	xmm7, rax
+	mulsd		xmm6, xmm7
+
+	; conversion
 	cvtsd2si	r8, xmm6
 
 	; calculate address on buffer
