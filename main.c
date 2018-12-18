@@ -29,6 +29,7 @@ enum {
 };
 double coefficients[] = { 0, 0, 0, 0, S_STEP };
 int cursorPosition = CURSOR_POSITION_A;
+#define COEFFICIENT_STEP 0.5
 
 void sdlInit();
 void sdlClose();
@@ -67,7 +68,7 @@ int main(int argc, char* args[])
 					if(cursorPosition == CURSOR_POSITION_S){
 						coefficients[cursorPosition] += S_STEP;
 					} else {
-						coefficients[cursorPosition] += 1;
+						coefficients[cursorPosition] += COEFFICIENT_STEP;
 					}
 					break;
 
@@ -82,7 +83,7 @@ int main(int argc, char* args[])
 							draw = 0;
 						}
 					} else {
-						coefficients[cursorPosition] -= 1;
+						coefficients[cursorPosition] -= COEFFICIENT_STEP;
 					}
 					break;
 

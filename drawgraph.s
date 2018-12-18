@@ -69,5 +69,4 @@ graph:
 	mul		rsi
 	lea		r10, [rdi, rax*4]
 	mov		[r10], DWORD 0x00FF0000
-
 	ret
