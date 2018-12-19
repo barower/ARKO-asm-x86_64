@@ -99,8 +99,8 @@ graph:
 	; y = y + 1.0
 
 	; y *= (height/2)
-	mov		rax, rdx
-	sar		rax, 1
+	mov		rax, rdx		; <<<< TU JEST BLAD
+	sar		rax, 1			; <<<< TU JEST BLAD
 	cvtsi2sd	xmm7, rax
 	mulsd		xmm6, xmm7
 
