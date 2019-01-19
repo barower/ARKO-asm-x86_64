@@ -115,6 +115,8 @@ graph:
 	cvtsd2si	r8, xmm6
 
 	; is y out of bounds? If yes, skip putting pixels
+	sub		r8, 0
+	jl		skipdraw
 	mov		rax, r9
 	sub		rax, r8
 	jle		skipdraw
