@@ -114,9 +114,17 @@ graph:
 	; conversion
 	cvtsd2si	r8, xmm6
 
+	; is y out of bounds? If yes, skip putting pixels
+	mov		rax, r9
+	sub		rax, r8
+	jle		skipdraw
+
 	; calculate address on buffer
 	mov		rax, r8
 	mul		rsi
 	lea		r10, [rdi, rax*4]
+
 	mov		[r10], DWORD 0x00FF0000
 	ret
+
+skipdraw:
