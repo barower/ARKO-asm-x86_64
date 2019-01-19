@@ -6,6 +6,7 @@
 ; double B, double C, double D, double S);
 ;   xmm1      xmm2      xmm3      xmm4
 drawGraph_body:
+	; Store
 
 ;------------------------------------------------------------------------------
 ; Registers in this section:
@@ -39,10 +40,10 @@ yaxisloop:
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
 ; | rax	| TEMPORARY REGISTER		| rbx |	(must be preserved)		|
-; | rcx	|				| rdx | (input)buffer height		|
+; | rcx	|				| rdx | (DESTROYED BY MUL)buffer height	|
 ; | rbp	| (must be preserved)		| rsp |					|
 ; | rsi	| (input)buffer width		| rdi | (input)buffer base address	|
-; | r8	|				| r9  |					|
+; | r8	|				| r9  |	(moved from rdx)buffer height	|
 ; | r10	| WRITE ADDRESS			| r11 |	COUNTER				|
 ; | r12	| (must be preserved)		| r13 | (must be preserved)		|
 ; | r14	| (must be preserved)		| r15 | (must be preserved)		|
@@ -50,6 +51,9 @@ yaxisloop:
 xaxisinit:
 	;		Prepare counter
 	mov		r11, rsi
+
+	;		Save buffer height from being destroyed by mul operation
+	mov 		r9, rdx
 
 	;		Prepare initial address:
 	;			(height/2)*width*4
@@ -72,10 +76,10 @@ xaxisloop:
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
 ; | rax	| TEMPORARY REGISTER		| rbx |	(must be preserved)		|
-; | rcx	| X OFFSET IN BUFFER 		| rdx | (input)buffer height		|
+; | rcx	| X OFFSET IN BUFFER 		| rdx | (DESTROYED BY MUL)		|
 ; | rbp	| (must be preserved)		| rsp |					|
 ; | rsi	| (input)buffer width		| rdi | (input)buffer base address	|
-; | r8	| Y OFFSET IN BUFFER 		| r9  |					|
+; | r8	| Y OFFSET IN BUFFER 		| r9  |	(moved from rdx)buffer height	|
 ; | r10	| WRITE ADDRESS			| r11 |					|
 ; | r12	| (must be preserved)		| r13 | (must be preserved)		|
 ; | r14	| (must be preserved)		| r15 | (must be preserved)		|
@@ -97,10 +101,13 @@ graph:
 
 	; convert y in double to y in index
 	; y = y + 1.0
+	mov		rax, 1
+	cvtsi2sd	xmm7, rax
+	addsd		xmm6, xmm7
 
 	; y *= (height/2)
-	mov		rax, rdx		; <<<< TU JEST BLAD
-	sar		rax, 1			; <<<< TU JEST BLAD
+	mov		rax, r9		; czy aby na pewno niesmieciowa wartosc?
+	sar		rax, 1
 	cvtsi2sd	xmm7, rax
 	mulsd		xmm6, xmm7
 
