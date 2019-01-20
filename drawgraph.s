@@ -175,6 +175,19 @@ calculatex:
 	mulsd		xmm8, xmm9
 	addsd		xmm7, xmm8
 
+	; calculate step
+	; step = S / sqrt(1 + derivative*derivative)
+	mulsd		xmm7, xmm7
+	mov		rax, 1
+	cvtsi2sd	xmm8, rax
+	addsd		xmm7, xmm8
+	sqrtsd		xmm7, xmm7
+	movsd		xmm8, xmm4	; prepare S
+	divsd		xmm8, xmm7
+
+	; add step to x
+	addsd		xmm5, xmm8
+
 	; move calculated x to temporary value
 	movsd		xmm8, xmm5
 
