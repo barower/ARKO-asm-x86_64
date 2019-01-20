@@ -27,7 +27,7 @@ enum {
 	CURSOR_POSITION_S,
 	CURSOR_POSITION_NO_ELEMENTS
 };
-double coefficients[] = { 1, 2, 3, 0, S_STEP };
+double coefficients[] = { 0, 0, 0, 0, S_STEP };
 int cursorPosition = CURSOR_POSITION_A;
 #define COEFFICIENT_STEP 0.5
 
