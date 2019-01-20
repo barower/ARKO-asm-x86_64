@@ -125,7 +125,7 @@ graph_iter:
 	addsd		xmm6, xmm7
 
 	; y *= (height/2)
-	mov		rax, r9		; czy aby na pewno niesmieciowa wartosc?
+	mov		rax, r9
 	sar		rax, 1
 	cvtsi2sd	xmm7, rax
 	mulsd		xmm6, xmm7
@@ -151,9 +151,31 @@ graph_iter:
 calculatex:
 	;TODO: zamienic na poprawne wyliczanie pochodnej
 	; x += S
-	addsd		xmm5, xmm4
+;	addsd		xmm5, xmm4
 
-	; move x to temporary value
+	; calculate derivative of drawed function
+	; derivative = 3*A*x*x + 2*B*x + C;
+	; derivative = C
+	movsd		xmm7, xmm2
+
+	; derivative += 2*B*x
+	movsd		xmm8, xmm5
+	mulsd		xmm8, xmm1
+	mov		rax, 2
+	cvtsi2sd	xmm9, rax
+	mulsd		xmm8, xmm9
+	addsd		xmm7, xmm8
+
+	; derivative += 3*A*x*x
+	movsd		xmm8, xmm0
+	mulsd		xmm8, xmm5
+	mulsd		xmm8, xmm5
+	mov		rax, 3
+	cvtsi2sd	xmm9, rax
+	mulsd		xmm8, xmm9
+	addsd		xmm7, xmm8
+
+	; move calculated x to temporary value
 	movsd		xmm8, xmm5
 
 	; calculate new x offset position
