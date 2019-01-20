@@ -105,6 +105,12 @@ graph_iter:
 	mulsd		xmm8, xmm2
 	addsd		xmm6, xmm8
 
+	; y += x*x*B
+	movsd		xmm8, xmm1
+	mulsd		xmm8, xmm5
+	mulsd		xmm8, xmm5
+	addsd		xmm6, xmm8
+
 	; convert y in double to y in index
 	; y = y + 1.0
 	mov		rax, 1
