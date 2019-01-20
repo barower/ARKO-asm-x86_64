@@ -96,6 +96,7 @@ graph:
 	; start x offset in buffer from 0 (left)
 	mov		rcx, 0
 
+graph_iter:
 	; y = D
 	movsd		xmm6, xmm3
 
@@ -116,17 +117,46 @@ graph:
 
 	; is y out of bounds? If yes, skip putting pixels
 	sub		r8, 0
-	jl		skipdraw
+	jl		calculatex
 	mov		rax, r9
 	sub		rax, r8
-	jle		skipdraw
+	jle		calculatex
 
 	; calculate address on buffer
 	mov		rax, r8
 	mul		rsi
 	lea		r10, [rdi, rax*4]
+	lea		r10, [r10, rcx*4]
 
 	mov		[r10], DWORD 0x00FF0000
-	ret
 
-skipdraw:
+calculatex:
+	;TODO: zamienic na poprawne wyliczanie pochodnej
+	; x += S
+	addsd		xmm5, xmm4
+
+	; move x to temporary value
+	movsd		xmm8, xmm5
+
+	; calculate new x offset position
+	; x = x + 1.0
+	mov		rax, 1
+	cvtsi2sd	xmm7, rax
+	addsd		xmm8, xmm7
+
+	; x *= (width/2)
+	mov		rax, rsi
+	sar		rax, 1
+	cvtsi2sd	xmm7, rax
+	mulsd		xmm8, xmm7
+
+	; conversion
+	cvtsd2si	rcx, xmm8
+
+	; is x out of bounds? if yes, stop this procedure
+	mov		rax, rcx
+	sub		rax, rsi
+	jle		graph_iter
+
+end:
+	ret
