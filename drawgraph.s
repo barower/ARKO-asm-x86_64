@@ -8,6 +8,9 @@
 drawGraph_body:
 	; Store
 
+	push rbp
+	mov rbp, rsp
+
 ;------------------------------------------------------------------------------
 ; Registers in this section:
 ;  ----------------------------------------------------------------------------
@@ -212,4 +215,6 @@ calculatex:
 	jle		graph_iter
 
 end:
+	mov rsp, rbp
+	pop rbp
 	ret
