@@ -31,18 +31,18 @@ double coefficients[] = { 0, 0, 0, 0, S_STEP };
 int cursorPosition = CURSOR_POSITION_A;
 #define COEFFICIENT_STEP 0.5
 
-void sdlInit();
-void sdlClose();
+void sdlInit(void);
+void sdlClose(void);
 
-void drawText();
-void drawGraph(SDL_Surface *surface, double *coefficients);
+void drawText(void);
+void drawGraph(SDL_Surface *surface, double *coeffs);
 
 SDL_Window *window = NULL;
 SDL_Surface *screenSurface = NULL;
 SDL_Surface *keyPressSurfaces[KEY_PRESS_SURFACE_TOTAL];
 TTF_Font* Sans = NULL;
 
-int main(int argc, char* args[])
+int main(void)
 {
 	int quit = 0, draw = 0;
 	SDL_Event e;
@@ -129,14 +129,14 @@ int main(int argc, char* args[])
 	return 0;
 }
 
-void drawGraph(SDL_Surface *surface, double *coefficients){
+void drawGraph(SDL_Surface *surface, double *coeffs){
 	printf("Printing graph\n");
 
 	drawGraph_body((unsigned char *)surface->pixels, surface->w, surface->h, 
-		-1*coefficients[0], -1*coefficients[1], -1*coefficients[2], -1*coefficients[3], coefficients[4]);
+		-1*coeffs[0], -1*coeffs[1], -1*coeffs[2], -1*coeffs[3], coeffs[4]);
 }
 
-void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offset){
+static void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offset){
 
 	// as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, color); 
@@ -159,12 +159,12 @@ void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offs
 	SDL_BlitSurface(surfaceMessage, &srcrect, screenSurface, &dstrect);
 }
 
-void drawText(){
+void drawText(void){
 
 	char string[20];
 
 	// this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
-	SDL_Color White = {255, 255, 255};
+	SDL_Color White = {.r=255, .g=255, .b=255};
 
 	snprintf(string, 19, "A=%.1f", coefficients[CURSOR_POSITION_A]);
 	putString(string, White, 0.075, 0.95, 0);
@@ -179,7 +179,7 @@ void drawText(){
 
 }
 
-void sdlInit(){
+void sdlInit(void){
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0){
 		printf("SDL Init fail: %s\n", SDL_GetError());
@@ -214,7 +214,7 @@ void sdlInit(){
 	SDL_UpdateWindowSurface(window);
 }
 
-void sdlClose(){
+void sdlClose(void){
 
 	SDL_DestroyWindow(window);
 	window = NULL;

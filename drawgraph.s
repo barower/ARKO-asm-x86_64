@@ -6,8 +6,6 @@
 ; double B, double C, double D, double S);
 ;   xmm1      xmm2      xmm3      xmm4
 drawGraph_body:
-	; Store
-
 	push rbp
 	mov rbp, rsp
 
@@ -90,6 +88,7 @@ xaxisloop:
 ; | xmm2| (input)C			| xmm3| (input)D			|
 ; | xmm4| (input)S			| xmm5| X IN DOUBLE			|
 ; | xmm6| Y IN DOUBLE			| xmm7|	TEMPORARY REGISTER		|
+; | xmm8| TEMPORARY REGISTER		| xmm9|	TEMPORARY REGISTER		|
 graph:
 	; xmm5 = (double)x
 	; x = -1.0
@@ -136,7 +135,7 @@ graph_iter:
 	; conversion
 	cvtsd2si	r8, xmm6
 
-	; is y out of bounds? If yes, skip putting pixels
+	; is y out of bounds? If yes, skip putting this pixel
 	sub		r8, 0
 	jl		calculatex
 	mov		rax, r9
@@ -149,13 +148,10 @@ graph_iter:
 	lea		r10, [rdi, rax*4]
 	lea		r10, [r10, rcx*4]
 
+	; put pixel on buffer
 	mov		[r10], DWORD 0x00FF0000
 
 calculatex:
-	;TODO: zamienic na poprawne wyliczanie pochodnej
-	; x += S
-;	addsd		xmm5, xmm4
-
 	; calculate derivative of drawed function
 	; derivative = 3*A*x*x + 2*B*x + C;
 	; derivative = C

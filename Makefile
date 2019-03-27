@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -Wall -g
+CCFLAGS = -Wall -Wextra -Wcast-qual -Wcast-align -Wstrict-aliasing -Wpointer-arith -Winit-self -Wshadow -Wswitch-enum -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wfloat-equal -Wundef -Wvla -Wc++-compat
 OBJS_C = main.c drawgraph.c
 OBJ_NAME_C = projekt_c
 
