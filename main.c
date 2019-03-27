@@ -4,6 +4,14 @@
 
 #include "drawgraph.h"
 
+#define DEBUG
+
+#ifdef DEBUG
+	#define debug_printf(x) printf(x)
+#else
+	#define debug_printf(x) do {} while (0)
+#endif
+
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
@@ -52,7 +60,7 @@ int main(void)
 	while(!quit){
 
 		while(SDL_PollEvent(&e) != 0){
-		
+
 			draw = 0;
 
 			if(e.type == SDL_QUIT){
@@ -63,7 +71,7 @@ int main(void)
 				switch(e.key.keysym.sym){
 				case SDLK_UP:
 				case SDLK_k:
-					printf("Key up\n");
+					debug_printf("Key up\n");
 					draw = 1;
 					if(cursorPosition == CURSOR_POSITION_S){
 						coefficients[cursorPosition] += S_STEP;
@@ -74,7 +82,7 @@ int main(void)
 
 				case SDLK_DOWN:
 				case SDLK_j:
-					printf("Key down\n");
+					debug_printf("Key down\n");
 					draw = 1;
 					if(cursorPosition == CURSOR_POSITION_S){
 						if(coefficients[cursorPosition] > S_VALUE_MIN){
@@ -89,7 +97,7 @@ int main(void)
 
 				case SDLK_LEFT:
 				case SDLK_h:
-					printf("Key left\n");
+					debug_printf("Key left\n");
 					draw = 1;
 					cursorPosition -=  1;
 					cursorPosition = (cursorPosition < 0) ? CURSOR_POSITION_NO_ELEMENTS - 1 : cursorPosition;
@@ -97,18 +105,18 @@ int main(void)
 
 				case SDLK_RIGHT:
 				case SDLK_l:
-					printf("Key right\n");
+					debug_printf("Key right\n");
 					draw = 1;
 					cursorPosition = (cursorPosition + 1)%CURSOR_POSITION_NO_ELEMENTS;
 					break;
 
 				case SDLK_q:
-					printf("Exiting\n");
+					debug_printf("Exiting\n");
 					exit(EXIT_SUCCESS);
 					break;
 
 				default:
-					printf("Other key\n");
+					debug_printf("Other key\n");
 					//Do nothing with cursor
 					break;
 				}
@@ -130,16 +138,16 @@ int main(void)
 }
 
 void drawGraph(SDL_Surface *surface, double *coeffs){
-	printf("Printing graph\n");
+	debug_printf("Printing graph\n");
 
-	drawGraph_body((unsigned char *)surface->pixels, surface->w, surface->h, 
+	drawGraph_body((unsigned char *)surface->pixels, surface->w, surface->h,
 		-1*coeffs[0], -1*coeffs[1], -1*coeffs[2], -1*coeffs[3], coeffs[4]);
 }
 
 static void putString(char *text, SDL_Color color, float x_pos, float y_pos, int y_offset){
 
 	// as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
-	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, color); 
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, color);
 
 	SDL_Rect srcrect = {
 		.x = 0,
